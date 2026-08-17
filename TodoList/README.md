@@ -42,7 +42,7 @@ There is nothing to install and nothing to build.
 ## Usage
 
 | Action | How |
-| --- | --- |
+| --- | --- |git status
 | Add a task | Type in the box and press <kbd>Enter</kbd>, or click **Add** |
 | Complete a task | Click its checkbox |
 | Edit a task | Double-click the task text, or click the pencil button |

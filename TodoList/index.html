@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="A fast, front-end only todo list app with local storage persistence." />
+  <title>Todo List</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><text y='26' font-size='26'>&#9989;</text></svg>" />
+  <script>
+    // Apply the saved theme before first paint to avoid a flash of the wrong colors.
+    (function () {
+      try {
+        var theme = window.localStorage.getItem('todo-list:theme');
+        if (theme === 'light' || theme === 'dark') {
+          document.documentElement.setAttribute('data-theme', theme);
+        }
+      } catch (err) { /* storage unavailable — fall back to the OS preference */ }
+    })();
+  </script>
+</head>
+<body>
+  <div class="app">
+    <header class="app__header">
+      <div class="app__titles">
+        <h1 class="app__title">Todo List</h1>
+        <p class="app__subtitle">Everything is saved in your browser.</p>
+      </div>
+      <button
+        type="button"
+        id="theme-toggle"
+        class="icon-button theme-toggle"
+        aria-label="Switch color theme"
+        title="Switch color theme"
+      >
+        <span class="theme-toggle__icon" aria-hidden="true"></span>
+      </button>
+    </header>
+
+    <main class="card">
+      <form id="new-todo-form" class="new-todo" autocomplete="off">
+        <label class="visually-hidden" for="new-todo-input">What needs to be done?</label>
+        <input
+          type="text"
+          id="new-todo-input"
+          class="new-todo__input"
+          placeholder="What needs to be done?"
+          maxlength="200"
+          required
+        />
+        <button type="submit" class="button button--primary">Add</button>
+      </form>
+
+      <div class="list-header" id="list-header" hidden>
+        <label class="toggle-all">
+          <input type="checkbox" id="toggle-all" class="toggle-all__input" />
+          <span class="toggle-all__label">Mark all as done</span>
+        </label>
+      </div>
+
+      <ul id="todo-list" class="todo-list" aria-label="Todo items"></ul>
+
+      <p id="empty-state" class="empty-state" hidden></p>
+
+      <footer class="app__footer" id="app-footer" hidden>
+        <p class="counter" id="counter" aria-live="polite"></p>
+
+        <nav class="filters" aria-label="Filter todos">
+          <a href="#/all" class="filters__link" data-filter="all">All</a>
+          <a href="#/active" class="filters__link" data-filter="active">Active</a>
+          <a href="#/completed" class="filters__link" data-filter="completed">Completed</a>
+        </nav>
+
+        <button type="button" id="clear-completed" class="button button--ghost">
+          Clear completed
+        </button>
+      </footer>
+    </main>
+
+    <p class="hint">
+      Double-click a task to edit it. Press <kbd>Esc</kbd> to cancel.
+    </p>
+  </div>
+
+  <template id="todo-item-template">
+    <li class="todo">
+      <input type="checkbox" class="todo__checkbox" name="todo-done" />
+      <span class="todo__text"></span>
+      <input type="text" class="todo__edit" name="todo-text" maxlength="200" autocomplete="off" hidden />
+      <div class="todo__actions">
+        <button type="button" class="icon-button todo__action" data-action="edit" title="Edit">
+          <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+            <path d="M4 20h4l10-10-4-4L4 16v4z" />
+            <path d="M14.5 5.5l4 4" />
+          </svg>
+        </button>
+        <button type="button" class="icon-button todo__action todo__action--danger" data-action="delete" title="Delete">
+          <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+            <path d="M5 7h14M10 7V5h4v2M7 7l1 12h8l1-12" />
+          </svg>
+        </button>
+      </div>
+    </li>
+  </template>
+
+  <script src="app.js"></script>
+</body>
+</html>
